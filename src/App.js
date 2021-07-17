@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useEffect, useContext, useState } from "react";
+import "./App.css";
+import Homescreen from "./components/Homescreen/Homescreen";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Loginscreen from "./components/LoginScreen/Loginscreen";
+import { auth } from "./firebase";
+import { MovieContext } from "./context/globalState";
+import ProfileScreen from "./components/ProfileScreen/ProfileScreen";
 function App() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        setUser({
+          uid: userAuth.uid,
+          email: userAuth.email,
+        });
+      } else {
+        setUser(null);
+      }
+    });
+    return unsubscribe;
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MovieContext.Provider value={{ user }}>
+      <div className="app">
+        <Router>
+          {!user ? (
+            <Loginscreen />
+          ) : (
+            <Switch>
+              <Route exact path="/profile">
+                <ProfileScreen />
+              </Route>
+              <Route exact path="/">
+                <Homescreen />
+              </Route>
+            </Switch>
+          )}
+        </Router>
+      </div>
+    </MovieContext.Provider>
   );
 }
 

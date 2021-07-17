@@ -1,10 +1,13 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { MovieContext } from "../../context/globalState";
 import Navbar from "../Navbar/Navbar";
 import { auth } from "../../firebase";
 import "./ProfileScreen.css";
+import PlanScreen from "../PlanScreen/PlanScreen";
 const ProfileScreen = () => {
   const { user } = useContext(MovieContext);
+  const history = useHistory();
   return (
     <div className="profileScreen">
       <Navbar />
@@ -19,9 +22,13 @@ const ProfileScreen = () => {
             <h2>{user.email}</h2>
             <div className="profileScreen__plans">
               <h3>Plans</h3>
+              <PlanScreen />
               <p></p>
               <button
-                onClick={() => auth.signOut()}
+                onClick={() => {
+                  auth.signOut();
+                  history.push("/");
+                }}
                 className="profileScreen__signOut"
               >
                 Sign Out
