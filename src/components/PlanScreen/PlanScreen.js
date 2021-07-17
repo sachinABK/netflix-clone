@@ -4,6 +4,14 @@ import { loadStripe } from "@stripe/stripe-js";
 import { MovieContext } from "../../context/globalState";
 import "./PlanScreen.css";
 const PlanScreen = () => {
+  let stripeAppId;
+
+  if (process.env.NODE_ENV !== "production") {
+    stripeAppId = process.env.REACT_APP_STRIPE_APP_ID;
+  } else {
+    stripeAppId = process.env.STRIPE_APP_ID;
+  }
+
   const [products, setProducts] = useState([]);
   const { user } = useContext(MovieContext);
   const [subscription, setSubscription] = useState();
@@ -59,7 +67,7 @@ const PlanScreen = () => {
         alert(`An error occured: ${error.message}`);
       }
       if (sessionId) {
-        const stripe = await loadStripe(process.env.REACT_APP_STRIPE_APP_ID);
+        const stripe = await loadStripe(stripeAppId);
         stripe.redirectToCheckout({
           sessionId,
         });
