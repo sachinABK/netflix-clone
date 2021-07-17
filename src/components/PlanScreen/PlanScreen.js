@@ -43,8 +43,6 @@ const PlanScreen = () => {
       });
   }, []);
 
-  console.log(products);
-  console.log(subscription);
   const loadCheckout = async (priceId) => {
     const docRef = await db
       .collection("customers")
