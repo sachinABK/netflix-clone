@@ -25,9 +25,7 @@ const SignupScreen = () => {
         emailRef.current.value,
         passwordRef.current.value
       )
-      .then((authUser) => {
-        console.log(authUser);
-      })
+      .then((authUser) => {})
       .catch((err) => alert(err));
   };
 

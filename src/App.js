@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Homescreen from "./components/Homescreen/Homescreen";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";

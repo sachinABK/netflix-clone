@@ -5,13 +5,21 @@ import "./row.css";
 const Row = ({ title, fetchURL, isLargeRow }) => {
   const imageURL = "https://image.tmdb.org/t/p/original/";
   const [movies, setMovies] = useState([]);
+  let isMounted = true;
   useEffect(() => {
     const fetchData = async () => {
       const request = await requestAPI.get(fetchURL);
-      setMovies(request.data.results);
-      return request;
+      if (isMounted) {
+        setMovies(request.data.results);
+        return request;
+      }
     };
+
     fetchData();
+    return () => {
+      // eslint-disable-next-line
+      isMounted = false;
+    };
   }, [fetchURL]);
 
   return (

@@ -4,17 +4,24 @@ import requests from "../../apis/requestEndPoint";
 import "./banner.css";
 const Banner = () => {
   const [movie, setMovie] = useState([]);
+  let isMounted = true;
   useEffect(() => {
     const fetchData = async () => {
       const request = await requestAPI.get(requests.fetchNetflixOriginl);
-      setMovie(
-        request.data.results[
-          Math.floor(Math.random() * request.data.results.length - 1)
-        ]
-      );
-      return request;
+      if (isMounted) {
+        setMovie(
+          request.data.results[
+            Math.floor(Math.random() * request.data.results.length - 1)
+          ]
+        );
+        return request;
+      }
     };
     fetchData();
+    return () => {
+      // eslint-disable-next-line
+      isMounted = false;
+    };
   }, []);
   //   console.log(movie);
   const truncate = (str, n) =>
